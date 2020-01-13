@@ -1,0 +1,12 @@
+Calc aggregated table:
+
+1)
+- date
+- site
+- index (new / popular / etc)
+- language
+- count
+- percent
+
+2)
+??? Associations (most associated publishers, etc) ???

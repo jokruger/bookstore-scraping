@@ -65,7 +65,7 @@ def process_idx(writer, url):
     global index_pages
     index_pages += 1
 
-    response = tools.get_page(url)
+    response = tools.get_idx_page(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     for a in soup.findAll('a', {'class': 'product__name'}):
         process_book(writer, 'https://book-ye.com.ua' + a['href'])
