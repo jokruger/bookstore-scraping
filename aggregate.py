@@ -33,9 +33,6 @@ for subdir, dirs, files in os.walk('./data'):
                         s2[k] = { 'count': 0, 'date': date, 'site': site, 'category': category, 'language': language }
                     s2[k]['count'] += 1
 
-print (s1)
-print (s2)
-
 r = sorted(s2.values(), key = lambda x: x['date'] + x['site'] + x['category'] + x['language'])
 with open('language-trends.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
