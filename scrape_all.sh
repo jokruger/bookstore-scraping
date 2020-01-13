@@ -9,4 +9,6 @@ rm -f *.log
 
 wait
 
+./aggregate.py
+
 git add --all
