@@ -27,7 +27,7 @@ def init_wd():
 
     return path
 
-@cache.memoize(typed=True, expire=60*60*24*7)
+@cache.memoize(typed=True, expire=60*60*24*1)
 def get_page(url):
     #time.sleep(1)
     return requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})
