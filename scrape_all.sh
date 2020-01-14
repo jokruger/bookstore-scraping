@@ -6,6 +6,7 @@ rm -f *.log
 
 ./scrape_book_ye.py &
 ./scrape_yakaboo.py &
+./scrape_bukva.py &
 
 wait
 

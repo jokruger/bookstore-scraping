@@ -12,6 +12,8 @@ languages = {
 
     'ukrainian': 'Ukrainian',
     'українська': 'Ukrainian',
+    'ураїнська': 'Ukrainian',
+    'укераїнська': 'Ukrainian',
     'украинский': 'Ukrainian',
     
 
@@ -21,6 +23,7 @@ languages = {
 
     'russian': 'Russian',
     'російська': 'Russian',
+    'російька': 'Russian',
     'русский': 'Russian',
 
     'french': 'French',

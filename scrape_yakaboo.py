@@ -77,18 +77,32 @@ def process_idx(writer, url):
 def scrape_new(path):
     logging.info('\tscrape new')
 
+    base = 'https://www.yakaboo.ua/ua/top100/category/newarrival/id/4723/'
+
     w = tools.make_csv(path + '/new.csv')
-    process_idx(w, 'https://www.yakaboo.ua/ua/top100/category/newarrival/id/4723/')
+    process_idx(w, base)
     for i in range(29):
-        process_idx(w, 'https://www.yakaboo.ua/ua/top100/category/newarrival/id/4723/?p=%d' % (i + 2))
+        process_idx(w, base + '?p=%d' % (i + 2))
 
 def scrape_popular(path):
     logging.info('\tscrape popular')
 
+    base = 'https://www.yakaboo.ua/ua/top100/category/popular/id/4723/'
+
     w = tools.make_csv(path + '/popular.csv')
-    process_idx(w, 'https://www.yakaboo.ua/ua/top100/category/popular/id/4723/')
+    process_idx(w, base)
     for i in range(29):
-        process_idx(w, 'https://www.yakaboo.ua/ua/top100/category/popular/id/4723/?p=%d' % (i + 2))
+        process_idx(w, base + '?p=%d' % (i + 2))
+
+def scrape_bestsellers(path):
+    logging.info('\tscrape bestsellers')
+
+    base = 'https://www.yakaboo.ua/ua/top100/category/bestsales/id/4723/'
+
+    w = tools.make_csv(path + '/bestsellers.csv')
+    process_idx(w, base)
+    for i in range(29):
+        process_idx(w, base + '?p=%d' % (i + 2))
 
 # ======
 
@@ -100,5 +114,6 @@ if not os.path.exists(site_path):
 
 scrape_new(site_path)
 scrape_popular(site_path)
+scrape_bestsellers(site_path)
 
 logging.info('\tDone %d index pages, %d book pages, %d books, %d records' % (index_pages, book_pages, books, records))

@@ -73,17 +73,21 @@ def process_idx(writer, url):
 def scrape_new(path):
     logging.info('\tscrape new')
 
+    base = 'https://book-ye.com.ua/catalog/vydavnytstva/filter/novinka-is-true/'
+
     w = tools.make_csv(path + '/new.csv')
-    process_idx(w, 'https://book-ye.com.ua/catalog/vydavnytstva/filter/novinka-is-true/')
+    process_idx(w, base)
     for i in range(29):
-        process_idx(w, 'https://book-ye.com.ua/catalog/vydavnytstva/filter/novinka-is-true/?PAGEN_1=%d' % (i + 2))
+        process_idx(w, base + '?PAGEN_1=%d' % (i + 2))
 
 def scrape_popular(path):
     logging.info('\tscrape popular')
 
+    base = 'https://book-ye.com.ua/catalog/vydavnytstva/filter/top-is-true/'
+
     w = tools.make_csv(path + '/popular.csv')
-    process_idx(w, 'https://book-ye.com.ua/catalog/vydavnytstva/filter/top-is-true/')
-    process_idx(w, 'https://book-ye.com.ua/catalog/vydavnytstva/filter/top-is-true/?PAGEN_1=2')
+    process_idx(w, base)
+    process_idx(w, base + '?PAGEN_1=2')
 
 # ======
 

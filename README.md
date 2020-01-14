@@ -14,10 +14,10 @@
 ### done
 * https://www.yakaboo.ua/
 * https://book-ye.com.ua/
+* https://bukva.ua/
 
 ### todo
 * https://grenka.ua/
-* https://bukva.ua/
 * booksmoda.com.ua
 * https://petrovka.ua/
 * http://books.ua/
