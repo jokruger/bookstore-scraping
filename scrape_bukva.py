@@ -59,7 +59,7 @@ def process_book(writer, url):
     books += b
     records += r
 
-def process_idx(writer, url):
+def process_idx(writer, url, done):
     logging.info('\t\t' + url)
 
     global index_pages
@@ -70,25 +70,32 @@ def process_idx(writer, url):
     for item in soup.findAll('div', {'class': 'h4'}):
         a = item.find('a')
         if a and '/catalog/browse/' in a['href']:
-            process_book(writer, a['href'])
+            if a['href'] not in done:
+                done.add(a['href'])
+                process_book(writer, a['href'])
+            else:
+                logging.error('already done: ' + a['href'])
 
 def scrape_new(path):
     logging.info('\tscrape new')
 
     base = 'https://bukva.ua/ua/catalog/browse/445'
+    done = set()
 
     w = tools.make_csv(path + '/new.csv')
-    process_idx(w, base)
+    process_idx(w, base, done)
     for i in range(29):
-        process_idx(w, base + '/%d?' % (i + 2))
+        process_idx(w, base + '/%d?' % (i + 2), done)
 
 def scrape_bestsellers(path):
     logging.info('\tscrape bestsellers')
 
+    done = set()
+
     w = tools.make_csv(path + '/bestsellers.csv')
-    process_idx(w, 'https://bukva.ua/ua/catalog/browse/445?filter%%5Bfilter_type%%5D=notexisit&sort=bestsellers&sort_dir=desc&filter_type=&page=1&g_pp=20')
+    process_idx(w, 'https://bukva.ua/ua/catalog/browse/445?filter%%5Bfilter_type%%5D=notexisit&sort=bestsellers&sort_dir=desc&filter_type=&page=1&g_pp=20', done)
     for i in range(29):
-        process_idx(w, 'https://bukva.ua/ua/catalog/browse/445/%d?filter%%5Bfilter_type%%5D=notexisit&sort=bestsellers&sort_dir=desc&filter_type=&page=1&g_pp=20' % (i + 2))
+        process_idx(w, 'https://bukva.ua/ua/catalog/browse/445/%d?filter%%5Bfilter_type%%5D=notexisit&sort=bestsellers&sort_dir=desc&filter_type=&page=1&g_pp=20' % (i + 2), done)
 
 # ======
 

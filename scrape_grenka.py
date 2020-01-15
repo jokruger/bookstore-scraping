@@ -5,7 +5,7 @@ import os, logging
 from bs4 import BeautifulSoup
 from src import tools
 
-site = 'yakaboo.ua'
+site = 'grenka.ua'
 
 tools.init_logging(site)
 path = tools.init_wd()
@@ -17,12 +17,6 @@ records = 0
 
 # ======
 
-def get_name(page):
-    t = page.find('div', {'id': 'product-title'})
-    if t:
-        return t.text.strip()
-    return None
-
 def process_book(writer, url):
     logging.info('\t\t\t' + url)
 
@@ -32,30 +26,32 @@ def process_book(writer, url):
     response = tools.get_page(url)
     page = BeautifulSoup(response.text, 'html.parser')
 
-    name = get_name(page)
-
+    name = None
     author = None
     publisher = None
     year = None
     language = None
 
-    t = page.find('table', {'class': 'product-attributes__table'})
-    if t:
-        for r in t.findAll('tr'):
-            s = r.text.strip().split('\n')
-            if len(s) == 2:
-                v = s[1].strip()
-                k = s[0].strip().lower()
-                if k == 'автор':
+    card = page.find('div', {'class': 'xsp'})
+    if card:
+        t = card.find('h1')
+        if t:
+            name = t.text.strip()
+
+        for i in card.findAll('li'):
+            t = i.text.strip().rstrip().split('\n')
+            if len(t) == 3:
+                k = t[0].strip().lower()
+                v = t[2].strip()
+
+                if k == 'автор(ы)':
                     author = v
-                elif k == 'видавництво':
+                elif k == 'издательство':
                     publisher = v
-                elif k == 'мова':
-                    language = tools.parse_language(v)
-                elif k == 'рік видання':
+                elif k == 'год издания':
                     year = v
-            else:
-                logging.error('unable to parse row ' + str(s))
+                elif k == 'язык издания':
+                    language = tools.parse_language(v)
 
     b, r = tools.save_book(writer, site, url, name, author, publisher, year, language)
     books += b
@@ -69,9 +65,10 @@ def process_idx(writer, url, done):
 
     response = tools.get_idx_page(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    for item in soup.findAll('li', {'class': 'item'}):
-        a = item.find('a')
-        if a:
+
+    t = soup.find('div', {'id': 'xsrch-items'})
+    if t:
+        for a in t.findAll('a', {'class': 'y20'}):
             if a['href'] not in done:
                 done.add(a['href'])
                 process_book(writer, a['href'])
@@ -81,7 +78,7 @@ def process_idx(writer, url, done):
 def scrape_new(path):
     logging.info('\tscrape new')
 
-    base = 'https://www.yakaboo.ua/ua/top100/category/newarrival/id/4723/'
+    base = 'https://grenka.ua/books/new'
     done = set()
 
     w = tools.make_csv(path + '/new.csv')
@@ -89,26 +86,15 @@ def scrape_new(path):
     for i in range(29):
         process_idx(w, base + '?p=%d' % (i + 2), done)
 
-def scrape_popular(path):
-    logging.info('\tscrape popular')
-
-    base = 'https://www.yakaboo.ua/ua/top100/category/popular/id/4723/'
-    done = set()
-
-    w = tools.make_csv(path + '/popular.csv')
-    process_idx(w, base, done)
-    for i in range(29):
-        process_idx(w, base + '?p=%d' % (i + 2), done)
-
 def scrape_bestsellers(path):
     logging.info('\tscrape bestsellers')
 
-    base = 'https://www.yakaboo.ua/ua/top100/category/bestsales/id/4723/'
+    base = 'https://grenka.ua/books/best'
     done = set()
 
     w = tools.make_csv(path + '/bestsellers.csv')
     process_idx(w, base, done)
-    for i in range(29):
+    for i in range(20):
         process_idx(w, base + '?p=%d' % (i + 2), done)
 
 # ======
@@ -120,7 +106,6 @@ if not os.path.exists(site_path):
     os.makedirs(site_path)
 
 scrape_new(site_path)
-scrape_popular(site_path)
 scrape_bestsellers(site_path)
 
 logging.info('\tDone %d index pages, %d book pages, %d books, %d records' % (index_pages, book_pages, books, records))

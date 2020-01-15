@@ -59,7 +59,7 @@ def process_book(writer, url):
     books += b
     records += r
 
-def process_idx(writer, url):
+def process_idx(writer, url, done):
     logging.info('\t\t' + url)
 
     global index_pages
@@ -68,26 +68,32 @@ def process_idx(writer, url):
     response = tools.get_idx_page(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     for a in soup.findAll('a', {'class': 'product__name'}):
-        process_book(writer, 'https://book-ye.com.ua' + a['href'])
+        if a['href'] not in done:
+            done.add(a['href'])
+            process_book(writer, 'https://book-ye.com.ua' + a['href'])
+        else:
+            logging.error('already done: ' + a['href'])
 
 def scrape_new(path):
     logging.info('\tscrape new')
 
     base = 'https://book-ye.com.ua/catalog/vydavnytstva/filter/novinka-is-true/'
+    done = set()
 
     w = tools.make_csv(path + '/new.csv')
-    process_idx(w, base)
+    process_idx(w, base, done)
     for i in range(29):
-        process_idx(w, base + '?PAGEN_1=%d' % (i + 2))
+        process_idx(w, base + '?PAGEN_1=%d' % (i + 2), done)
 
 def scrape_popular(path):
     logging.info('\tscrape popular')
 
     base = 'https://book-ye.com.ua/catalog/vydavnytstva/filter/top-is-true/'
+    done = set()
 
     w = tools.make_csv(path + '/popular.csv')
-    process_idx(w, base)
-    process_idx(w, base + '?PAGEN_1=2')
+    process_idx(w, base, done)
+    process_idx(w, base + '?PAGEN_1=2', done)
 
 # ======
 

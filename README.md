@@ -15,12 +15,11 @@
 * https://www.yakaboo.ua/
 * https://book-ye.com.ua/
 * https://bukva.ua/
+* https://grenka.ua/
 
 ### todo
-* https://grenka.ua/
 * booksmoda.com.ua
 * https://petrovka.ua/
-* http://books.ua/
 * http://www.knigograd.com.ua/
 * http://www.bookshop.ua/
 * https://lavkababuin.com/
@@ -47,3 +46,4 @@
 * https://hotline.ua/knigi/
 * http://bukvoid.com.ua
 * bookclub.ua
+* http://books.ua/
