@@ -18,7 +18,6 @@
 * https://grenka.ua/
 
 ### todo
-* booksmoda.com.ua
 * https://petrovka.ua/
 * http://www.knigograd.com.ua/
 * http://www.bookshop.ua/
@@ -47,3 +46,4 @@
 * http://bukvoid.com.ua
 * bookclub.ua
 * http://books.ua/
+* booksmoda.com.ua
